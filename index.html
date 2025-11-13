@@ -338,3 +338,331 @@ function resetToHome(){
 </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SmartFix electricals — Booking</title>
+<style>
+:root{--accent1:#ffd700;--accent2:#ff8800;--glass: rgba(255,255,255,0.08);}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#fff;background:#000;overflow-y:auto;}
+.slideshow{position:fixed;inset:0;z-index:-3;overflow:hidden}
+.slideshow img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:fadeSlide 32s infinite ease-in-out}
+.slideshow img:nth-child(1){animation-delay:0s}
+.slideshow img:nth-child(2){animation-delay:8s}
+.slideshow img:nth-child(3){animation-delay:16s}
+.slideshow img:nth-child(4){animation-delay:24s}
+@keyframes fadeSlide{0%{opacity:0}8%{opacity:1}25%{opacity:1}33%{opacity:0}100%{opacity:0}}
+.overlay{position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.6));pointer-events:none}
+.page-wrap{max-width:1100px;margin:0 auto;padding:18px;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-start;}
+.card{background:linear-gradient(180deg, rgba(0,0,0,0.28), rgba(255,255,255,0.02));border-radius:14px;padding:22px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 10px 30px rgba(0,0,0,0.45);}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:#000;font-weight:800}
+h1{margin:0;color:var(--accent1);font-size:1.05rem}
+.subtitle{color:rgba(255,255,255,0.92);font-size:0.95rem}
+.contact{text-align:right;font-size:0.95rem;color:rgba(255,255,255,0.9)}
+.progress{height:10px;background:rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;margin:10px 0}
+.progress>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent1),var(--accent2));width:33%;transition:width 260ms}
+form{display:flex;flex-direction:column;gap:14px}
+.row{display:flex;gap:12px}
+.col{flex:1;display:flex;flex-direction:column;gap:8px}
+label{font-weight:700;color:rgba(255,255,255,0.95);font-size:0.95rem}
+input,select,textarea{padding:10px;border-radius:8px;border:none;font-size:1rem;background:#fff;color:#111}
+textarea{min-height:120px;resize:vertical}
+.buttons{display:flex;gap:10px;align-items:center}
+.btn{padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer;border:none}
+.btn-primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#000}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.12);color:#fff}
+.whatsapp{background:#25D366;color:#fff;padding:10px 12px;border-radius:8px;text-decoration:none;font-weight:700;display:inline-block}
+section.step{display:none}
+section.step.active{display:block}
+.review{background:rgba(255,255,255,0.04);padding:12px;border-radius:10px}
+.spinner{width:36px;height:36px;border-radius:50%;border:5px solid rgba(255,255,255,0.12);border-top-color:var(--accent1);animation:spin 900ms linear infinite;margin:12px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.info{margin-top:18px;background:rgba(0,0,0,0.24);padding:16px;border-radius:12px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+footer{margin-top:18px;text-align:center;color:rgba(255,255,255,0.9)}
+.result-panel{display:none;position:fixed;inset:0;z-index:40;align-items:center;justify-content:center;background:rgba(0,0,0,0.85)}
+.result-panel.active{display:flex}
+.result-card{background:rgba(255,255,255,0.10);backdrop-filter:blur(12px);padding:30px;border-radius:16px;text-align:center;max-width:520px;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+.result-card h2{margin:0 0 10px 0}
+@media(max-width:900px){.row{flex-direction:column}.info-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.page-wrap{margin:18px auto;padding:12px}.card{padding:16px}h1{font-size:1rem}.subtitle{font-size:0.95rem}input,textarea,select{font-size:0.95rem}.logo{width:48px;height:48px}.buttons{flex-direction:column;align-items:stretch}.whatsapp{display:block;text-align:center}}
+@media(max-width:480px){.overlay{background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.85))}h1{font-size:0.98rem}}
+</style>
+</head>
+<body>
+
+<div class="slideshow" aria-hidden="true">
+  <img src="electrician1.jpg" alt="">
+  <img src="electrician2.jpg" alt="">
+  <img src="electrician3.jpg" alt="">
+  <img src="electrician4.jpg" alt="">
+</div>
+<div class="overlay" aria-hidden="true"></div>
+
+<main class="page-wrap">
+  <div class="card">
+    <header>
+      <div style="display:flex;gap:12px;align-items:center">
+        <div class="logo">SF</div>
+        <div>
+          <h1>SmartFix electricals</h1>
+          <div class="subtitle">Fast • Trusted • Professional</div>
+        </div>
+      </div>
+      <div class="contact">
+        <div>Call / WhatsApp: <a href="tel:+233543899210" style="color:#fff;text-decoration:underline">+233 54 389 9210</a></div>
+        <div>Email: <a href="mailto:timothytiekuapawu@gmail.com" style="color:#fff;text-decoration:underline">timothytiekuapawu@gmail.com</a></div>
+      </div>
+    </header>
+
+    <div class="progress" aria-hidden="true"><span id="prog" style="width:33%"></span></div>
+
+    <!-- Step 1 -->
+    <section id="step1" class="step active" aria-label="Step 1">
+      <p class="subtitle" style="margin-bottom:10px">Step 1 — Tell us who you are & what you need</p>
+      <form id="formMain">
+        <div class="row">
+          <div class="col">
+            <label for="user_name">Full Name</label>
+            <input id="user_name" name="user_name" type="text" required placeholder="e.g., John Doe">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label for="user_phone">Phone Number</label>
+            <input id="user_phone" name="user_phone" type="tel" required placeholder="+233 54 389 9210">
+          </div>
+          <div class="col">
+            <label for="maintenance_type">Type of Maintenance</label>
+            <select id="maintenance_type" name="maintenance_type" required>
+              <option value="">-- Select --</option>
+              <option>Wiring fault / repair</option>
+              <option>Rewiring / new connection</option>
+              <option>Lighting / fan installation</option>
+              <option>Socket outlet installation</option>
+              <option>Fuse box / circuit breaker</option>
+              <option>Generator / inverter</option>
+              <option>Appliance connection</option>
+              <option>Solar PV / battery system</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="buttons" style="margin-top:6px">
+          <button type="button" class="btn btn-primary" id="next1">Next ➡</button>
+          <a class="whatsapp" id="quickwhats" target="_blank" href="https://api.whatsapp.com/send?phone=233543899210&text=Hello%20SmartFix%2C%20I%20need%20help.">💬 Quick WhatsApp</a>
+          <div style="margin-left:auto" class="subtitle">Step 1 of 3</div>
+        </div>
+      </form>
+    </section>
+
+    <!-- Step 2 -->
+    <section id="step2" class="step" aria-label="Step 2">
+      <p class="subtitle">Step 2 — Job details</p>
+      <div>
+        <div class="row">
+          <div class="col">
+            <label for="user_email">Email</label>
+            <input id="user_email" name="user_email" type="email" required placeholder="you@example.com">
+          </div>
+          <div class="col">
+            <label for="audience_level">Priority Level</label>
+            <select id="audience_level" name="audience_level" required>
+              <option value="">-- Select Priority --</option>
+              <option>Low (Flexible)</option>
+              <option>Medium (2–3 Days)</option>
+              <option>High (Urgent)</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label for="contact_address">Contact Address</label>
+            <input id="contact_address" name="contact_address" type="text" required placeholder="Your address">
+          </div>
+          <div class="col">
+            <label for="preferred_datetime">Preferred Date & Time</label>
+            <input id="preferred_datetime" name="preferred_datetime" type="datetime-local">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label for="message">Describe the Problem</label>
+            <textarea id="message" name="message" placeholder="Describe issue..."></textarea>
+          </div>
+        </div>
+        <div class="buttons" style="margin-top:6px">
+          <button type="button" class="btn btn-ghost" id="back1">⬅ Back</button>
+          <button type="button" class="btn btn-primary" id="toReview">Review & Send ➡</button>
+          <div style="margin-left:auto" class="subtitle">Step 2 of 3</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Review -->
+    <section id="review" class="step" aria-label="Review">
+      <p class="subtitle">Review your details — confirm before sending</p>
+      <div class="review" id="reviewBox"></div>
+      <div style="display:flex;gap:10px;align-items:center;margin-top:12px">
+        <button type="button" class="btn btn-ghost" id="editBtn">⬅ Edit</button>
+        <button type="button" class="btn btn-primary" id="confirmBtn">✅ Confirm & Send</button>
+        <div id="sending" style="display:none;margin-left:12px"><div class="spinner" aria-hidden="true"></div></div>
+      </div>
+    </section>
+
+    <!-- About / Details -->
+    <section class="info card" style="margin-top:18px" id="about">
+      <h2 style="margin-top:0;color:var(--accent1)">About SmartFix electricals</h2>
+      <p class="subtitle">SmartFix electricals is a professional electrical maintenance and installation service operating in Accra and surrounding areas. We handle residential and light commercial electrical work with a focus on safety, clarity, and reliability.</p>
+      <div class="info-grid" style="margin-top:12px">
+        <div>
+          <h3 style="margin:0 0 8px 0">What an Electrician Does</h3>
+          <ul>
+            <li>Diagnose and repair wiring faults and electrical equipment.</li>
+            <li>Install and replace sockets, switches, lights and fans.</li>
+            <li>Design and implement rewiring for additions or renovations.</li>
+            <li>Troubleshoot fuse boxes, circuit breakers, and RCDs.</li>
+            <li>Install and maintain generators, inverters, and solar PV systems.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="margin:0 0 8px 0">Fields of Work</h3>
+          <ul>
+            <li>Residential wiring & maintenance</li>
+            <li>Commercial electrical installations</li>
+            <li>Solar PV installation and maintenance</li>
+            <li>Generator & inverter installation</li>
+            <li>Electrical safety inspections and testing</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer><small>© SmartFix electricals</small></footer>
+  </div>
+</main>
+
+<!-- Result modal -->
+<div id="resultPanel" class="result-panel" role="dialog" aria-hidden="true">
+  <div class="result-card">
+    <h2 id="resultTitle"></h2>
+    <p id="resultMessage" aria-live="polite"></p>
+    <button class="btn btn-ghost" onclick="resetToHome()">🏠 Back to Home</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+try {
+  emailjs.init("ad1dHGUf_gonZ5ERG"); // <-- Replace with your EmailJS public key
+} catch(e) { console.error("EmailJS init error:", e); }
+
+const step1=document.getElementById('step1');
+const step2=document.getElementById('step2');
+const review=document.getElementById('review');
+const prog=document.getElementById('prog');
+const resultPanel=document.getElementById('resultPanel');
+const resultTitle=document.getElementById('resultTitle');
+const resultMessage=document.getElementById('resultMessage');
+
+document.getElementById('formMain').addEventListener('submit', e => e.preventDefault());
+
+document.getElementById('next1').addEventListener('click', ()=>{
+  const n=document.getElementById('user_name').value.trim();
+  const p=document.getElementById('user_phone').value.trim();
+  const t=document.getElementById('maintenance_type').value;
+  if(!n||!p||!t){alert('Fill Full Name, Phone, Maintenance Type');return;}
+  step1.classList.remove('active'); step2.classList.add('active'); prog.style.width='66%';
+});
+
+document.getElementById('back1').addEventListener('click', ()=>{
+  step2.classList.remove('active'); step1.classList.add('active'); prog.style.width='33%';
+});
+
+document.getElementById('toReview').addEventListener('click', ()=>{
+  const email=document.getElementById('user_email').value.trim();
+  const priority=document.getElementById('audience_level').value;
+  const address=document.getElementById('contact_address').value.trim();
+  if(!email||!priority||!address){alert('Fill Email, Priority, Address');return;}
+  const data={
+    user_name:document.getElementById('user_name').value.trim(),
+    user_phone:document.getElementById('user_phone').value.trim(),
+    maintenance_type:document.getElementById('maintenance_type').value,
+    user_email:email,
+    audience_level:priority,
+    preferred_datetime:document.getElementById('preferred_datetime').value||'',
+    message:document.getElementById('message').value.trim()||'',
+    contact_address:address
+  };
+  window.sessionStorage.setItem('smartfix_booking', JSON.stringify(data));
+  document.getElementById('reviewBox').innerHTML=`
+    <div><strong>Name:</strong> ${data.user_name}</div>
+    <div><strong>Phone:</strong> ${data.user_phone}</div>
+    <div><strong>Maintenance Type:</strong> ${data.maintenance_type}</div>
+    <div><strong>Email:</strong> ${data.user_email}</div>
+    <div><strong>Priority:</strong> ${data.audience_level}</div>
+    <div><strong>Preferred Date & Time:</strong> ${data.preferred_datetime||'Not specified'}</div>
+    <div><strong>Address:</strong> ${data.contact_address}</div>
+    <div><strong>Description:</strong> ${data.message||'No description provided'}</div>
+  `;
+  step2.classList.remove('active'); review.classList.add('active'); prog.style.width='100%';
+});
+
+document.getElementById('editBtn').addEventListener('click', ()=>{
+  review.classList.remove('active'); step2.classList.add('active'); prog.style.width='66%';
+});
+
+document.getElementById('confirmBtn').addEventListener('click', ()=>{
+  const raw=window.sessionStorage.getItem('smartfix_booking');
+  if(!raw){alert('No booking found');return;}
+  const params=JSON.parse(raw);
+  document.getElementById('sending').style.display='block';
+
+  // <-- Replace with your EmailJS Service ID and Template ID
+  emailjs.send("service_972cf37","template_3epza38", params)
+    .then(()=>{
+      document.getElementById('sending').style.display='none';
+      resultTitle.innerText="✅ Request Sent";
+      resultMessage.innerText="Thanks for booking with SmartFix electricals. We will contact you soon.";
+      resultPanel.classList.add('active');
+      window.sessionStorage.removeItem('smartfix_booking');
+      setTimeout(resetToHome, 5000);
+    })
+    .catch(()=>{
+      document.getElementById('sending').style.display='none';
+      resultTitle.innerText="❌ Submission Failed";
+      resultMessage.innerText="There was an error sending your request. Please try again.";
+      resultPanel.classList.add('active');
+      setTimeout(resetToHome, 5000);
+    });
+});
+
+function resetToHome(){
+  resultPanel.classList.remove('active');
+  review.classList.remove('active');
+  step2.classList.remove('active');
+  step1.classList.add('active');
+  prog.style.width='33%';
+  document.getElementById('formMain').reset();
+}
+
+// Quick WhatsApp dynamic update
+['user_name','user_phone','maintenance_type'].forEach(id=>{
+  const el=document.getElementById(id);
+  el?.addEventListener('input', ()=>{
+    const name=document.getElementById('user_name').value.trim()||'[name]';
+    const phone=document.getElementById('user_phone').value.trim()||'[phone]';
+    const type=document.getElementById('maintenance_type').value||'electrical assistance';
+    document.getElementById('quickwhats').href='https://api.whatsapp.com/send?phone=233543899210&text='+encodeURIComponent(`Hello SmartFix, my name is ${name} (${phone}). I need ${type}.`);
+  });
+});
+</script>
+</body>
+</html>
+
+
