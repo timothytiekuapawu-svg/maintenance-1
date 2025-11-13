@@ -1,4 +1,4 @@
-<!-- Save this as index.html -->
+<!-- Save as index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>SmartFix electricals — Booking</title>
   <style>
-    :root{ --accent1:#ffd700; --accent2:#ff8800; }
+    :root{ --accent1:#1900ff; --accent2:#ff0095; }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:#fff;background:#000;overflow-y:auto}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:#fff;background:lab(0% 0 0);overflow-y:auto}
     .slideshow{position:fixed;inset:0;z-index:-3;overflow:hidden}
     .slideshow img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:fadeSlide 32s infinite ease-in-out}
     .slideshow img:nth-child(1){animation-delay:0s}
@@ -177,6 +177,23 @@
       </section>
     </div>
 
+    <!-- Result Panels -->
+    <div id="resultSuccess" class="result-panel">
+      <div class="result-card">
+        <h2 style="color:#00ff90">✅ Request Sent</h2>
+        <p>Thanks for booking with SmartFix electricals. We will contact you soon.</p>
+        <a class="btn btn-primary" href="#" id="rsHome">Back to Home</a>
+      </div>
+    </div>
+
+    <div id="resultError" class="result-panel">
+      <div class="result-card">
+        <h2 style="color:#ff6b6b">❌ Submission Failed</h2>
+        <p>There was an error sending your request. Please check your internet and try again.</p>
+        <a class="btn btn-primary" href="#" id="reTry">Try Again</a>
+      </div>
+    </div>
+
     <!-- About, Contact, Address, Footer -->
     <section class="info card" style="margin-top:18px" id="about">
       <h2 style="margin-top:0;color:var(--accent1)">About SmartFix electricals</h2>
@@ -201,34 +218,35 @@
     <footer><small>© SmartFix electricals</small></footer>
   </main>
 
-  <!-- SCRIPT -->
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', ()=>{
+      // Init EmailJS
+      try{emailjs.init('ad1dHGUf_gonZ5ERG');}catch(e){console.warn('EmailJS init failed', e);}
+
       const step1=document.getElementById('step1');
       const step2=document.getElementById('step2');
       const review=document.getElementById('review');
       const prog=document.getElementById('prog');
 
-      function showStep(step){
-        document.querySelectorAll('section.step').forEach(s=>s.classList.remove('active'));
-        step.classList.add('active');
-      }
+      function showStep(step){document.querySelectorAll('section.step').forEach(s=>s.classList.remove('active'));step.classList.add('active');}
 
       document.getElementById('next1').addEventListener('click', ()=>{
         const name=document.getElementById('user_name').value.trim();
         const phone=document.getElementById('user_phone').value.trim();
         const type=document.getElementById('maintenance_type').value;
-        if(!name || !phone || !type){ alert('Please fill Full Name, Phone and Maintenance Type.'); return; }
-        showStep(step2); prog.style.width='66%';
+        if(!name||!phone||!type){alert('Please fill Full Name, Phone and Maintenance Type.');return;}
+        showStep(step2);prog.style.width='66%';
       });
 
-      document.getElementById('back1').addEventListener('click', ()=>{ showStep(step1); prog.style.width='33%'; });
+      document.getElementById('back1').addEventListener('click', ()=>{showStep(step1);prog.style.width='33%';});
 
       document.getElementById('toReview').addEventListener('click', ()=>{
         const email=document.getElementById('user_email').value.trim();
         const priority=document.getElementById('audience_level').value;
         const address=document.getElementById('user_address').value.trim();
-        if(!email || !priority || !address){ alert('Please fill Email, Priority, and Contact Address before reviewing.'); return; }
+        if(!email||!priority||!address){alert('Please fill Email, Priority, and Contact Address before reviewing.');return;}
 
         const data={
           user_name:document.getElementById('user_name').value.trim(),
@@ -240,7 +258,6 @@
           preferred_datetime:document.getElementById('preferred_datetime').value||'',
           message:document.getElementById('message').value.trim()||''
         };
-
         window.sessionStorage.setItem('smartfix_booking',JSON.stringify(data));
 
         const box=document.getElementById('reviewBox');
@@ -254,10 +271,41 @@
           <div><strong>Preferred Date & Time:</strong> ${data.preferred_datetime||'Not specified'}</div>
           <div><strong>Description:</strong> ${data.message||'No description provided'}</div>
         `;
-        showStep(review); prog.style.width='100%';
+        showStep(review);prog.style.width='100%';
       });
 
-      document.getElementById('editBtn').addEventListener('click', ()=>{ showStep(step2); prog.style.width='66%'; });
+      document.getElementById('editBtn').addEventListener('click', ()=>{showStep(step2);prog.style.width='66%';});
+
+      document.getElementById('confirmBtn').addEventListener('click', ()=>{
+        const raw=window.sessionStorage.getItem('smartfix_booking');
+        if(!raw){alert('No booking found.');return;}
+        const params=JSON.parse(raw);
+        document.getElementById('confirmBtn').disabled=true;
+        document.getElementById('sending').style.display='block';
+
+        emailjs.send('service_972cf37','template_3epza38',params)
+          .then(()=>{document.getElementById('sending').style.display='none';document.getElementById('resultSuccess').classList.add('active');window.sessionStorage.removeItem('smartfix_booking');})
+          .catch(err=>{console.error(err);document.getElementById('sending').style.display='none';document.getElementById('resultError').classList.add('active');});
+      });
+
+      document.getElementById('rsHome').addEventListener('click', e=>{e.preventDefault();resetToStart();});
+      document.getElementById('reTry').addEventListener('click', e=>{e.preventDefault();resetToStart();});
+
+      function resetToStart(){
+        document.getElementById('formMain').reset();
+        showStep(step1);prog.style.width='33%';
+        document.getElementById('confirmBtn').disabled=false;
+      }
+
+      // Update WhatsApp link dynamically
+      ['user_name','user_phone','maintenance_type'].forEach(id=>{
+        document.getElementById(id).addEventListener('input',()=>{
+          const name=document.getElementById('user_name').value.trim()||'[name]';
+          const phone=document.getElementById('user_phone').value.trim()||'[phone]';
+          const type=document.getElementById('maintenance_type').value||'electrical assistance';
+          document.getElementById('quickwhats').href='https://api.whatsapp.com/send?phone=233543899210&text='+encodeURIComponent(`Hello SmartFix, my name is ${name} (${phone}). I need ${type}.`);
+        });
+      });
     });
   </script>
 </body>
