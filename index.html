@@ -135,24 +135,28 @@
               </select>
             </div>
           </div>
+
           <div class="row">
             <div class="col">
               <label for="user_address">Contact Address</label>
               <input id="user_address" name="user_address" type="text" required placeholder="e.g., 12 Freedom Street, Accra">
             </div>
           </div>
+
           <div class="row">
             <div class="col">
               <label for="preferred_datetime">Preferred Date & Time</label>
               <input id="preferred_datetime" name="preferred_datetime" type="datetime-local">
             </div>
           </div>
+
           <div class="row">
             <div class="col">
               <label for="message">Describe the Problem</label>
               <textarea id="message" name="message" placeholder="Describe issue..."></textarea>
             </div>
           </div>
+
           <div class="buttons" style="margin-top:6px">
             <button type="button" class="btn btn-ghost" id="back1">⬅ Back</button>
             <button type="button" class="btn btn-primary" id="toReview">Review & Send ➡</button>
@@ -161,97 +165,100 @@
         </div>
       </section>
 
-      <!-- Review -->
+      <!-- Review Step -->
       <section id="review" class="step">
         <p class="subtitle">Review your details — confirm before sending</p>
         <div class="review" id="reviewBox"></div>
         <div style="display:flex;gap:10px;align-items:center;margin-top:12px">
           <button type="button" class="btn btn-ghost" id="editBtn">⬅ Edit</button>
           <button type="button" class="btn btn-primary" id="confirmBtn">✅ Confirm & Send</button>
-          <div id="sending" style="display:none;margin-left:12px"><div class="spinner" aria-hidden="true"></div></div>
+          <div id="sending" style="display:none;margin-left:12px"><div class="spinner"></div></div>
         </div>
       </section>
     </div>
 
-    <!-- About / Contact / Address / Footer (unchanged) -->
+    <!-- About, Contact, Address, Footer -->
     <section class="info card" style="margin-top:18px" id="about">
       <h2 style="margin-top:0;color:var(--accent1)">About SmartFix electricals</h2>
-      <p class="subtitle">SmartFix electricals is a professional electrical maintenance and installation service operating in Accra and surrounding areas. We handle residential and light commercial electrical work with a focus on safety, clarity, and reliability.</p>
+      <p class="subtitle">SmartFix electricals is a professional electrical maintenance and installation service operating in Accra and surrounding areas.</p>
     </section>
+
     <section class="info card" style="margin-top:18px" id="contact">
       <h2 style="margin-top:0;color:var(--accent1)">Contact Us</h2>
       <p class="subtitle"><strong>SmartFix electricals</strong></p>
-      <p class="subtitle">Phone / WhatsApp: <a href="tel:+233543899210" style="color:#fff;text-decoration:underline">+233 54 389 9210</a> — Alt: <a href="tel:+0534448661" style="color:#fff;text-decoration:underline">+053 444 8661</a></p>
+      <p class="subtitle">Phone / WhatsApp: <a href="tel:+233543899210" style="color:#fff;text-decoration:underline">+233 54 389 9210</a></p>
       <p class="subtitle">Email: <a href="mailto:timothytiekuapawu@gmail.com" style="color:#fff;text-decoration:underline">timothytiekuapawu@gmail.com</a></p>
       <p class="subtitle">Service area: Accra & surrounding areas. Available Mon–Sat.</p>
     </section>
+
     <section class="info card" style="margin-top:18px" id="address">
       <h2 style="margin-top:0;color:var(--accent1)">Our Address</h2>
       <p class="subtitle"><strong>Location:</strong> TTU Efiakuma, Takoradi, Ghana</p>
       <p class="subtitle"><strong>Office Hours:</strong> Mon – Sat, 8:00 AM – 6:00 PM</p>
-      <p class="subtitle"><strong>Directions:</strong> Located near Takoradi Technical University Akalima junction — easily accessible by main road.</p>
+      <p class="subtitle"><strong>Directions:</strong> Located near Takoradi Technical University Akalima junction</p>
     </section>
+
     <footer><small>© SmartFix electricals</small></footer>
   </main>
 
   <!-- SCRIPT -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
-  try { emailjs.init("ad1dHGUf_gonZ5ERG"); } catch(e) {}
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const step1=document.getElementById('step1');
+      const step2=document.getElementById('step2');
+      const review=document.getElementById('review');
+      const prog=document.getElementById('prog');
 
-  const step1=document.getElementById('step1');
-  const step2=document.getElementById('step2');
-  const review=document.getElementById('review');
-  const prog=document.getElementById('prog');
+      function showStep(step){
+        document.querySelectorAll('section.step').forEach(s=>s.classList.remove('active'));
+        step.classList.add('active');
+      }
 
-  function showStep(step){ document.querySelectorAll('section.step').forEach(s=>s.classList.remove('active')); step.classList.add('active'); }
+      document.getElementById('next1').addEventListener('click', ()=>{
+        const name=document.getElementById('user_name').value.trim();
+        const phone=document.getElementById('user_phone').value.trim();
+        const type=document.getElementById('maintenance_type').value;
+        if(!name || !phone || !type){ alert('Please fill Full Name, Phone and Maintenance Type.'); return; }
+        showStep(step2); prog.style.width='66%';
+      });
 
-  document.getElementById('next1').addEventListener('click',()=>{
-    if(!document.getElementById('user_name').value.trim() || !document.getElementById('user_phone').value.trim() || !document.getElementById('maintenance_type').value){
-      alert('Please fill Full Name, Phone and Maintenance Type.'); return;
-    }
-    showStep(step2); prog.style.width='66%';
-  });
-  document.getElementById('back1').addEventListener('click',()=>{ showStep(step1); prog.style.width='33%'; });
+      document.getElementById('back1').addEventListener('click', ()=>{ showStep(step1); prog.style.width='33%'; });
 
-  document.getElementById('toReview').addEventListener('click',()=>{
-    const email=document.getElementById('user_email').value.trim();
-    const priority=document.getElementById('audience_level').value;
-    const address=document.getElementById('user_address').value.trim();
-    if(!email || !priority || !address){ alert('Please fill Email, Priority, and Contact Address before reviewing.'); return; }
+      document.getElementById('toReview').addEventListener('click', ()=>{
+        const email=document.getElementById('user_email').value.trim();
+        const priority=document.getElementById('audience_level').value;
+        const address=document.getElementById('user_address').value.trim();
+        if(!email || !priority || !address){ alert('Please fill Email, Priority, and Contact Address before reviewing.'); return; }
 
-    const data={
-      user_name:document.getElementById('user_name').value.trim(),
-      user_phone:document.getElementById('user_phone').value.trim(),
-      user_address:address,
-      maintenance_type:document.getElementById('maintenance_type').value,
-      user_email:email,
-      audience_level:priority,
-      preferred_datetime:document.getElementById('preferred_datetime').value||'',
-      message:document.getElementById('message').value.trim()||''
-    };
-    window.sessionStorage.setItem('smartfix_booking',JSON.stringify(data));
+        const data={
+          user_name:document.getElementById('user_name').value.trim(),
+          user_phone:document.getElementById('user_phone').value.trim(),
+          user_address:address,
+          maintenance_type:document.getElementById('maintenance_type').value,
+          user_email:email,
+          audience_level:priority,
+          preferred_datetime:document.getElementById('preferred_datetime').value||'',
+          message:document.getElementById('message').value.trim()||''
+        };
 
-    const box=document.getElementById('reviewBox');
-    box.innerHTML=`
-      <div><strong>Name:</strong> ${escapeHtml(data.user_name)}</div>
-      <div><strong>Phone:</strong> ${escapeHtml(data.user_phone)}</div>
-      <div><strong>Contact Address:</strong> ${escapeHtml(data.user_address)}</div>
-      <div><strong>Maintenance Type:</strong> ${escapeHtml(data.maintenance_type)}</div>
-      <div><strong>Email:</strong> ${escapeHtml(data.user_email)}</div>
-      <div><strong>Priority:</strong> ${escapeHtml(data.audience_level)}</div>
-      <div><strong>Preferred Date & Time:</strong> ${escapeHtml(data.preferred_datetime||'Not specified')}</div>
-      <div><strong>Description:</strong> ${escapeHtml(data.message||'No description provided')}</div>
-    `;
-    showStep(review); prog.style.width='100%';
-  });
+        window.sessionStorage.setItem('smartfix_booking',JSON.stringify(data));
 
-  document.getElementById('editBtn').addEventListener('click',()=>{ showStep(step2); prog.style.width='66%'; });
+        const box=document.getElementById('reviewBox');
+        box.innerHTML=`
+          <div><strong>Name:</strong> ${data.user_name}</div>
+          <div><strong>Phone:</strong> ${data.user_phone}</div>
+          <div><strong>Contact Address:</strong> ${data.user_address}</div>
+          <div><strong>Maintenance Type:</strong> ${data.maintenance_type}</div>
+          <div><strong>Email:</strong> ${data.user_email}</div>
+          <div><strong>Priority:</strong> ${data.audience_level}</div>
+          <div><strong>Preferred Date & Time:</strong> ${data.preferred_datetime||'Not specified'}</div>
+          <div><strong>Description:</strong> ${data.message||'No description provided'}</div>
+        `;
+        showStep(review); prog.style.width='100%';
+      });
 
-  document.getElementById('confirmBtn').addEventListener('click',()=>{
-    const raw=window.sessionStorage.getItem('smartfix_booking');
-    if(!raw){ alert('No booking found.'); return; }
-    const params=JSON.parse(raw);
-    document.getElementById('confirmBtn').disabled=true; document.getElementById('sending').style.display='block';
-    if(typeof emailjs==='undefined' || !emailjs.send){
-      setTimeout(()=>{ document.getElementById('sending').style.display='none'; document.getElementById('resultSuccess').class
+      document.getElementById('editBtn').addEventListener('click', ()=>{ showStep(step2); prog.style.width='66%'; });
+    });
+  </script>
+</body>
+</html>
