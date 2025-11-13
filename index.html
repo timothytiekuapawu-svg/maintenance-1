@@ -7,15 +7,7 @@
 <style>
 :root{--accent1:#ffd700;--accent2:#ff8800;--glass: rgba(255,255,255,0.08);}
 *{box-sizing:border-box}
-html,body{
-  height:100%;
-  margin:0;
-  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  color:#fff;
-  background: linear-gradient(135deg, #00111a, #002244);
-  overflow-y:auto;
-}
-
+html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#fff;background:#000;overflow-y:auto;}
 .slideshow{position:fixed;inset:0;z-index:-3;overflow:hidden}
 .slideshow img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:fadeSlide 32s infinite ease-in-out}
 .slideshow img:nth-child(1){animation-delay:0s}
@@ -23,14 +15,7 @@ html,body{
 .slideshow img:nth-child(3){animation-delay:16s}
 .slideshow img:nth-child(4){animation-delay:24s}
 @keyframes fadeSlide{0%{opacity:0}8%{opacity:1}25%{opacity:1}33%{opacity:0}100%{opacity:0}}
-.overlay{
-  position:fixed;
-  inset:0;
-  z-index:-2;
-  background:linear-gradient(180deg, rgba(0,0,30,0.45), rgba(0,0,0,0.75));
-  pointer-events:none;
-}
-
+.overlay{position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.6));pointer-events:none}
 .page-wrap{max-width:1100px;margin:0 auto;padding:18px;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-start;}
 .card{background:linear-gradient(180deg, rgba(0,0,0,0.28), rgba(255,255,255,0.02));border-radius:14px;padding:22px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 10px 30px rgba(0,0,0,0.45);}
 header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
