@@ -9,24 +9,14 @@
     :root{ --accent1:#ffd700; --accent2:#ff8800; --glass: rgba(255,255,255,0.08); }
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#fff;background:#000;overflow-y:auto}
-    /* Slideshow (smooth cross-fade) */
     .slideshow{position:fixed;inset:0;z-index:-3;overflow:hidden}
     .slideshow img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:fadeSlide 32s infinite ease-in-out}
     .slideshow img:nth-child(1){animation-delay:0s}
     .slideshow img:nth-child(2){animation-delay:8s}
     .slideshow img:nth-child(3){animation-delay:16s}
     .slideshow img:nth-child(4){animation-delay:24s}
-    @keyframes fadeSlide{
-      0%{opacity:0}
-      8%{opacity:1}
-      25%{opacity:1}
-      33%{opacity:0}
-      100%{opacity:0}
-    }
-    /* overlay to improve contrast on mobile */
+    @keyframes fadeSlide{0%{opacity:0}8%{opacity:1}25%{opacity:1}33%{opacity:0}100%{opacity:0}}
     .overlay{position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.6));pointer-events:none}
-
-    /* Page layout */
     .page-wrap{max-width:1100px;margin:28px auto;padding:18px}
     .card{background:linear-gradient(180deg, rgba(0,0,0,0.28), rgba(255,255,255,0.02));border-radius:14px;padding:22px;backdrop-filter:blur(6px);box-shadow:0 10px 30px rgba(0,0,0,0.45)}
     header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
@@ -34,68 +24,37 @@
     h1{margin:0;color:var(--accent1);font-size:1.05rem}
     .subtitle{color:rgba(255,255,255,0.92);font-size:0.95rem}
     .contact{ text-align:right; font-size:0.95rem; color:rgba(255,255,255,0.9) }
-
     .progress{height:10px;background:rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;margin:10px 0}
     .progress > span{display:block;height:100%;background:linear-gradient(90deg,var(--accent1),var(--accent2));width:33%;transition:width 260ms}
-
-    /* Form layout */
     form{display:flex;flex-direction:column;gap:14px}
     .row{display:flex;gap:12px}
     .col{flex:1;display:flex;flex-direction:column;gap:8px}
     label{font-weight:700;color:rgba(255,255,255,0.95);font-size:0.95rem}
     input,select,textarea{padding:10px;border-radius:8px;border:none;font-size:1rem;background:#fff;color:#111}
     textarea{min-height:120px;resize:vertical}
-
     .buttons{display:flex;gap:10px;align-items:center}
     .btn{padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer;border:none}
     .btn-primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#000}
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.12);color:#fff}
     .whatsapp{background:#25D366;color:#fff;padding:10px 12px;border-radius:8px;text-decoration:none;font-weight:700;display:inline-block}
-
-    /* Sections shown/hidden */
     section.step{display:none}
     section.step.active{display:block}
-
-    /* Review box */
     .review{background:rgba(255,255,255,0.04);padding:12px;border-radius:10px}
-
-    /* Spinner */
     .spinner{width:36px;height:36px;border-radius:50%;border:5px solid rgba(255,255,255,0.12);border-top-color:var(--accent1);animation:spin 900ms linear infinite;margin:12px auto}
     @keyframes spin{to{transform:rotate(360deg)}}
-
-    /* Info blocks */
     .info{margin-top:18px;background:rgba(0,0,0,0.24);padding:16px;border-radius:12px}
     .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     @media(max-width:900px){.row{flex-direction:column}.info-grid{grid-template-columns:1fr}}
-
     footer{margin-top:18px;text-align:center;color:rgba(255,255,255,0.9)}
-
-    /* Result overlays */
     .result-panel{display:none;position:fixed;inset:0;z-index:40;align-items:center;justify-content:center}
     .result-panel.active{display:flex}
     .result-card{background:rgba(255,255,255,0.10);backdrop-filter:blur(12px);padding:30px;border-radius:16px;text-align:center;max-width:520px;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
     .result-card h2{margin:0 0 10px 0}
-
-    /* Responsive improvements for mobile readability */
-    @media (max-width:768px) {
-      .page-wrap{margin:18px auto;padding:12px}
-      .card{padding:16px}
-      h1{font-size:1rem}
-      .subtitle{font-size:0.95rem}
-      input,textarea,select{font-size:0.95rem}
-      .logo{width:48px;height:48px}
-      .buttons{flex-direction:column;align-items:stretch}
-      .whatsapp{display:block;text-align:center}
-    }
-
-    @media (max-width:480px) {
-      .overlay{background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.85))}
-      h1{font-size:0.98rem}
-    }
+    @media (max-width:768px) {.page-wrap{margin:18px auto;padding:12px} .card{padding:16px} h1{font-size:1rem} .subtitle{font-size:0.95rem} input,textarea,select{font-size:0.95rem} .logo{width:48px;height:48px} .buttons{flex-direction:column;align-items:stretch} .whatsapp{display:block;text-align:center}}
+    @media (max-width:480px){.overlay{background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.85))} h1{font-size:0.98rem}}
   </style>
 </head>
 <body>
-  <!-- Slideshow: place your 4 images in same folder with these names (or update src to match yours) -->
   <div class="slideshow" aria-hidden="true">
     <img src="electrician1.jpg" alt="">
     <img src="electrician2.jpg" alt="">
@@ -183,6 +142,14 @@
             </div>
           </div>
 
+          <!-- Contact Address -->
+          <div class="row">
+            <div class="col">
+              <label for="user_address">Contact Address</label>
+              <input id="user_address" name="user_address" type="text" required placeholder="e.g., 12 Freedom Street, Accra">
+            </div>
+          </div>
+
           <div class="row">
             <div class="col">
               <label for="preferred_datetime">Preferred Date & Time</label>
@@ -222,82 +189,20 @@
     <section class="info card" style="margin-top:18px" id="about">
       <h2 style="margin-top:0;color:var(--accent1)">About SmartFix electricals</h2>
       <p class="subtitle">SmartFix electricals is a professional electrical maintenance and installation service operating in Accra and surrounding areas. We handle residential and light commercial electrical work with a focus on safety, clarity, and reliability.</p>
-
-      <div class="info-grid" style="margin-top:12px">
-        <div>
-          <h3 style="margin:0 0 8px 0">What an Electrician Does</h3>
-          <ul>
-            <li>Diagnose and repair wiring faults and electrical equipment.</li>
-            <li>Install and replace sockets, switches, lights and fans.</li>
-            <li>Design and implement rewiring for additions or renovations.</li>
-            <li>Troubleshoot fuse boxes, circuit breakers, and RCDs.</li>
-            <li>Install and maintain generators, inverters, and solar PV systems.</li>
-          </ul>
-        </div>
-        <div>
-          <h3 style="margin:0 0 8px 0">Fields of Work</h3>
-          <ul>
-            <li>Residential wiring & maintenance</li>
-            <li>Commercial electrical installations</li>
-            <li>Solar PV installation and maintenance</li>
-            <li>Generator & inverter installation</li>
-            <li>Electrical safety inspections and testing</li>
-          </ul>
-        </div>
-      </div>
     </section>
-
-    <!-- Contact -->
-    <section class="info card" style="margin-top:18px" id="contact">
-      <h2 style="margin-top:0;color:var(--accent1)">Contact Us</h2>
-      <p class="subtitle"><strong>SmartFix electricals</strong></p>
-      <p class="subtitle">Phone / WhatsApp: <a href="tel:+233543899210" style="color:#fff;text-decoration:underline">+233 54 389 9210</a> — Alt: <a href="tel:+0534448661" style="color:#fff;text-decoration:underline">+053 444 8661</a></p>
-      <p class="subtitle">Email: <a href="mailto:timothytiekuapawu@gmail.com" style="color:#fff;text-decoration:underline">timothytiekuapawu@gmail.com</a></p>
-      <p class="subtitle">Service area: Accra & surrounding areas. Available Mon–Sat.</p>
-    </section>
-    
-    <!-- Address -->
-<section class="info card" style="margin-top:18px" id="address">
-  <h2 style="margin-top:0;color:var(--accent1)">Our Address</h2>
-  <p class="subtitle"><strong>Location:</strong> 123 Powerline Avenue, Accra, Ghana</p>
-  <p class="subtitle"><strong>Office Hours:</strong> Mon – Sat, 8:00 AM – 6:00 PM</p>
-  <p class="subtitle"><strong>Directions:</strong> Located near the Accra Technical University junction — easily accessible by main road.</p>
-</section>
-
 
     <footer><small>© SmartFix electricals</small></footer>
   </main>
 
-  <!-- Result overlays -->
-  <div id="resultSuccess" class="result-panel" role="dialog" aria-hidden="true">
-    <div class="result-card">
-      <h2 style="color:#00ff90">✅ Request Sent</h2>
-      <p>Thanks for booking with SmartFix electricals. We will contact you soon.</p>
-      <a class="btn btn-primary" href="#" id="rsHome">Back to Home</a>
-    </div>
-  </div>
-
-  <div id="resultError" class="result-panel" role="dialog" aria-hidden="true">
-    <div class="result-card">
-      <h2 style="color:#ff6b6b">❌ Submission Failed</h2>
-      <p>There was an error sending your request. Please check your internet and try again.</p>
-      <a class="btn btn-primary" href="#" id="reTry">Try Again</a>
-    </div>
-  </div>
-
-  <!-- Optional EmailJS (keeps previous placeholder init) -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
-    // Init EmailJS if you will send emails (replace with your key when ready)
-    try { emailjs.init("ad1dHGUf_gonZ5ERG"); } catch(e) { /* EmailJS not critical for demo */ }
+    try { emailjs.init("ad1dHGUf_gonZ5ERG"); } catch(e) {}
 
-    // Step elements
     const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
     const review = document.getElementById('review');
     const prog = document.getElementById('prog');
 
-    // NEXT button on Step 1
     document.getElementById('next1').addEventListener('click', ()=>{
       const name = document.getElementById('user_name').value.trim();
       const phone = document.getElementById('user_phone').value.trim();
@@ -306,31 +211,31 @@
         alert('Please fill Full Name, Phone and Maintenance Type.');
         return;
       }
-      // show step2
       step1.classList.remove('active'); step1.style.display='none';
       step2.classList.add('active'); step2.style.display='';
       prog.style.width='66%';
     });
 
-    // BACK button from Step 2
     document.getElementById('back1').addEventListener('click', ()=>{
       step2.classList.remove('active'); step2.style.display='none';
       step1.classList.add('active'); step1.style.display='';
       prog.style.width='33%';
     });
 
-    // TO REVIEW
     document.getElementById('toReview').addEventListener('click', ()=>{
       const email = document.getElementById('user_email').value.trim();
       const priority = document.getElementById('audience_level').value;
-      if(!email || !priority){
-        alert('Please fill Email and Priority before reviewing.');
+      const address = document.getElementById('user_address').value.trim();
+
+      if(!email || !priority || !address){
+        alert('Please fill Email, Priority, and Contact Address before reviewing.');
         return;
       }
 
       const data = {
         user_name: document.getElementById('user_name').value.trim(),
         user_phone: document.getElementById('user_phone').value.trim(),
+        user_address: address,
         maintenance_type: document.getElementById('maintenance_type').value,
         user_email: email,
         audience_level: priority,
@@ -343,6 +248,7 @@
       box.innerHTML = `
         <div style="margin-bottom:6px"><strong>Name:</strong> ${escapeHtml(data.user_name)}</div>
         <div style="margin-bottom:6px"><strong>Phone:</strong> ${escapeHtml(data.user_phone)}</div>
+        <div style="margin-bottom:6px"><strong>Contact Address:</strong> ${escapeHtml(data.user_address)}</div>
         <div style="margin-bottom:6px"><strong>Maintenance Type:</strong> ${escapeHtml(data.maintenance_type)}</div>
         <div style="margin-bottom:6px"><strong>Email:</strong> ${escapeHtml(data.user_email)}</div>
         <div style="margin-bottom:6px"><strong>Priority:</strong> ${escapeHtml(data.audience_level)}</div>
@@ -350,93 +256,19 @@
         <div style="margin-bottom:6px"><strong>Description:</strong> ${escapeHtml(data.message || 'No description provided')}</div>
       `;
 
-      // show review
       step2.classList.remove('active'); step2.style.display='none';
       review.classList.add('active'); review.style.display='';
       prog.style.width='100%';
     });
 
-    // EDIT (back to step 2)
     document.getElementById('editBtn').addEventListener('click', ()=>{
       review.classList.remove('active'); review.style.display='none';
       step2.classList.add('active'); step2.style.display='';
       prog.style.width='66%';
     });
 
-    // CONFIRM & SEND
-    document.getElementById('confirmBtn').addEventListener('click', ()=>{
-      const raw = window.sessionStorage.getItem('smartfix_booking');
-      if(!raw){ alert('No booking found.'); return; }
-      const params = JSON.parse(raw);
+    function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
-      document.getElementById('confirmBtn').disabled = true;
-      document.getElementById('sending').style.display='block';
-
-      const serviceID = "service_972cf37";
-      const templateID = "template_3epza38";
-
-      // If EmailJS not available, simulate success (remove for production)
-      if(typeof emailjs === 'undefined' || !emailjs.send){
-        setTimeout(()=> {
-          document.getElementById('sending').style.display='none';
-          document.getElementById('resultSuccess').classList.add('active');
-          window.sessionStorage.removeItem('smartfix_booking');
-        }, 900);
-        return;
-      }
-
-      emailjs.send(serviceID, templateID, params)
-        .then(()=> {
-          document.getElementById('sending').style.display='none';
-          document.getElementById('resultSuccess').classList.add('active');
-          window.sessionStorage.removeItem('smartfix_booking');
-        })
-        .catch((err)=> {
-          console.error('EmailJS error', err);
-          document.getElementById('sending').style.display='none';
-          document.getElementById('resultError').classList.add('active');
-        });
-    });
-
-    // Result buttons
-    document.getElementById('rsHome').addEventListener('click', (e)=>{
-      e.preventDefault();
-      document.getElementById('resultSuccess').classList.remove('active');
-      resetToStart();
-    });
-    document.getElementById('reTry').addEventListener('click', (e)=>{
-      e.preventDefault();
-      document.getElementById('resultError').classList.remove('active');
-      resetToStart();
-    });
-
-    function resetToStart(){
-      review.classList.remove('active'); review.style.display='none';
-      step2.classList.remove('active'); step2.style.display='none';
-      step1.classList.add('active'); step1.style.display='';
-      prog.style.width='33%';
-      document.getElementById('formMain').reset();
-      document.getElementById('confirmBtn').disabled = false;
-    }
-
-    // Small HTML escape helper
-    function escapeHtml(s){
-      if(!s) return '';
-      return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-    }
-
-    // dynamic quick whatsapp message update (fixed — was causing earlier JS error)
-    ['user_name','user_phone','maintenance_type'].forEach(id=>{
-      const el=document.getElementById(id);
-      if(!el) return;
-      el.addEventListener('input', ()=>{
-        const name = document.getElementById('user_name').value.trim() || '[name]';
-        const phone = document.getElementById('user_phone').value.trim() || '[phone]';
-        const type = document.getElementById('maintenance_type').value || 'electrical assistance';
-        const text = `Hello SmartFix, my name is ${name} (${phone}). I need ${type}.`;
-        document.getElementById('quickwhats').href = 'https://api.whatsapp.com/send?phone=233543899210&text=' + encodeURIComponent(text);
-      });
-    });
   </script>
 </body>
 </html>
