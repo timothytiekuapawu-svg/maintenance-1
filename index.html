@@ -185,10 +185,25 @@
       </section>
     </div>
 
-    <!-- About / Details section -->
+    <!-- About / Info / Contact / Address sections remain untouched -->
     <section class="info card" style="margin-top:18px" id="about">
       <h2 style="margin-top:0;color:var(--accent1)">About SmartFix electricals</h2>
       <p class="subtitle">SmartFix electricals is a professional electrical maintenance and installation service operating in Accra and surrounding areas. We handle residential and light commercial electrical work with a focus on safety, clarity, and reliability.</p>
+    </section>
+
+    <section class="info card" style="margin-top:18px" id="contact">
+      <h2 style="margin-top:0;color:var(--accent1)">Contact Us</h2>
+      <p class="subtitle"><strong>SmartFix electricals</strong></p>
+      <p class="subtitle">Phone / WhatsApp: <a href="tel:+233543899210" style="color:#fff;text-decoration:underline">+233 54 389 9210</a> — Alt: <a href="tel:+0534448661" style="color:#fff;text-decoration:underline">+053 444 8661</a></p>
+      <p class="subtitle">Email: <a href="mailto:timothytiekuapawu@gmail.com" style="color:#fff;text-decoration:underline">timothytiekuapawu@gmail.com</a></p>
+      <p class="subtitle">Service area: Accra & surrounding areas. Available Mon–Sat.</p>
+    </section>
+
+    <section class="info card" style="margin-top:18px" id="address">
+      <h2 style="margin-top:0;color:var(--accent1)">Our Address</h2>
+      <p class="subtitle"><strong>Location:</strong> TTU Efiakuma, Takoradi, Ghana</p>
+      <p class="subtitle"><strong>Office Hours:</strong> Mon – Sat, 8:00 AM – 6:00 PM</p>
+      <p class="subtitle"><strong>Directions:</strong> Located near Takoradi Technical University Akalima junction — easily accessible by main road.</p>
     </section>
 
     <footer><small>© SmartFix electricals</small></footer>
@@ -226,7 +241,6 @@
       const email = document.getElementById('user_email').value.trim();
       const priority = document.getElementById('audience_level').value;
       const address = document.getElementById('user_address').value.trim();
-
       if(!email || !priority || !address){
         alert('Please fill Email, Priority, and Contact Address before reviewing.');
         return;
@@ -250,25 +264,4 @@
         <div style="margin-bottom:6px"><strong>Phone:</strong> ${escapeHtml(data.user_phone)}</div>
         <div style="margin-bottom:6px"><strong>Contact Address:</strong> ${escapeHtml(data.user_address)}</div>
         <div style="margin-bottom:6px"><strong>Maintenance Type:</strong> ${escapeHtml(data.maintenance_type)}</div>
-        <div style="margin-bottom:6px"><strong>Email:</strong> ${escapeHtml(data.user_email)}</div>
-        <div style="margin-bottom:6px"><strong>Priority:</strong> ${escapeHtml(data.audience_level)}</div>
-        <div style="margin-bottom:6px"><strong>Preferred Date & Time:</strong> ${escapeHtml(data.preferred_datetime || 'Not specified')}</div>
-        <div style="margin-bottom:6px"><strong>Description:</strong> ${escapeHtml(data.message || 'No description provided')}</div>
-      `;
-
-      step2.classList.remove('active'); step2.style.display='none';
-      review.classList.add('active'); review.style.display='';
-      prog.style.width='100%';
-    });
-
-    document.getElementById('editBtn').addEventListener('click', ()=>{
-      review.classList.remove('active'); review.style.display='none';
-      step2.classList.add('active'); step2.style.display='';
-      prog.style.width='66%';
-    });
-
-    function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-
-  </script>
-</body>
-</html>
+        <div style="margin-bottom:6px"><strong>Email
