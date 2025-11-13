@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <script>//<![CDATA[
+      var s = false;
+      function l() {
+        setTimeout(f, 10000);
+        if (document.referrer) {
+          try {
+            var pm = /(^|&|\?)px=([^&]*)(&|$)/i;
+            var px = window.location.href.match(pm);
+            var rs = document.referrer;
+            if (px != null) {
+              if (rs.match(pm))
+                rs = rs.replace(pm, "$1px=" + px[2] + "$3");
+              else if (rs.indexOf("?") != -1)
+                rs = rs + "&px=" + px[2];
+              else
+                rs = rs + "?px=" + px[2];
+            }
+            history.replaceState({}, "Bing", rs);
+            window.addEventListener("pageshow", function(e) { if (e.persisted || (typeof window.performance != "undefined" && window.performance.navigation.type === 2)) window.location.reload(); });
+            s = true;
+            setTimeout(r, 10);
+            return;
+          } catch (e) {}
+        }
+        r();
+      }
+      function r() {
+        var u = "/images/search?q=%27images%2felectrician2.jpg%27+)%7d&id=BC1E415D06E49C459B9A8EEFC08F85D6479340C5&FORM=IACFIR";
+        if (s)
+          window.location.href = u;
+        else
+          window.location.replace(u);
+      }
+      function f() {
+        document.getElementById("fb").style.display = "block";
+      }
+      //]]>
+    </script>
+  </head>
+  <body onload="l()">
+    <div id="fb" style="display: none">
+      Please <a href="https://www.bing.com/ck/a?!&&p=1c8d05e4dcb0b907a44db1dcdc1323685084b156a5109a9ad1d700b537ff572dJmltdHM9MTc2Mjk5MjAwMA&ptn=3&ver=2&hsh=4&fclid=0b7e38a8-bfd3-6782-1c50-2e09be68661f&u=a1L2ltYWdlcy9zZWFyY2g_cT0lMjdpbWFnZXMlMmZlbGVjdHJpY2lhbjIuanBnJTI3KyklN2QmaWQ9QkMxRTQxNUQwNkU0OUM0NTlCOUE4RUVGQzA4Rjg1RDY0NzkzNDBDNSZGT1JNPUlBQ0ZJUg&ntb=F">click here</a> if the page does not redirect automatically ...
+    </div>
+  </body>
+</html>

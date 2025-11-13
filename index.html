@@ -1,76 +1,107 @@
-<!-- Save this as index.html -->
+<!-- Save this file as index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SmartFix electricals — Booking (Single-file)</title>
+  <title>SmartFix electricals — Booking</title>
   <style>
-    :root{ --accent1:#ffd700; --accent2:#ff8800; }
+    :root{ --accent1:#ffd700; --accent2:#ff8800; --glass: rgba(255,255,255,0.08); }
     *{box-sizing:border-box}
-    body{margin:0;font-family:"Poppins",sans-serif;color:#fff;min-height:100vh;position:relative;overflow:auto;background:#000;}
-    /* Slideshow using 2 images (duplicated for a smooth loop) */
-    .slideshow{position:fixed;inset:0;z-index:-3;background-size:cover;background-position:center;animation:slideshow 20s linear infinite}
-    @keyframes slideshow {
-      25% {background-image:url('imageselectrician4.jpg')}
-      50% {background-image:url('imageselectrician3.jpg')}
-      75% {background-image:url('images/electrician2.jpg')}
-      100% {background-image:url('images/electrician1.jpg')}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#fff;background:#000;overflow-y:auto}
+    /* Slideshow (smooth cross-fade) */
+    .slideshow{position:fixed;inset:0;z-index:-3;overflow:hidden}
+    .slideshow img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:fadeSlide 32s infinite ease-in-out}
+    .slideshow img:nth-child(1){animation-delay:0s}
+    .slideshow img:nth-child(2){animation-delay:8s}
+    .slideshow img:nth-child(3){animation-delay:16s}
+    .slideshow img:nth-child(4){animation-delay:24s}
+    @keyframes fadeSlide{
+      0%{opacity:0}
+      8%{opacity:1}
+      25%{opacity:1}
+      33%{opacity:0}
+      100%{opacity:0}
     }
-    .overlay{position:fixed;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.55));z-index:-2}
+    /* overlay to improve contrast on mobile */
+    .overlay{position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.6));pointer-events:none}
 
+    /* Page layout */
     .page-wrap{max-width:1100px;margin:28px auto;padding:18px}
-    .card{background:rgba(255,255,255,0.10);border-radius:14px;padding:24px;backdrop-filter:blur(10px);box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+    .card{background:linear-gradient(180deg, rgba(0,0,0,0.28), rgba(255,255,255,0.02));border-radius:14px;padding:22px;backdrop-filter:blur(6px);box-shadow:0 10px 30px rgba(0,0,0,0.45)}
     header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
     .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:#000;font-weight:800}
     h1{margin:0;color:var(--accent1);font-size:1.05rem}
-    .subtitle{color:rgba(255,255,255,0.9)}
+    .subtitle{color:rgba(255,255,255,0.92);font-size:0.95rem}
     .contact{ text-align:right; font-size:0.95rem; color:rgba(255,255,255,0.9) }
 
     .progress{height:10px;background:rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;margin:10px 0}
-    .progress > span{display:block;height:100%;background:linear-gradient(90deg,var(--accent1),var(--accent2));width:50%;transition:width 260ms}
+    .progress > span{display:block;height:100%;background:linear-gradient(90deg,var(--accent1),var(--accent2));width:33%;transition:width 260ms}
 
     /* Form layout */
     form{display:flex;flex-direction:column;gap:14px}
     .row{display:flex;gap:12px}
     .col{flex:1;display:flex;flex-direction:column;gap:8px}
-    label{font-weight:700;color:rgba(255,255,255,0.95)}
-    input,select,textarea{padding:10px;border-radius:8px;border:none;font-size:1rem;background:rgba(255,255,255,0.95);color:#111}
+    label{font-weight:700;color:rgba(255,255,255,0.95);font-size:0.95rem}
+    input,select,textarea{padding:10px;border-radius:8px;border:none;font-size:1rem;background:#fff;color:#111}
     textarea{min-height:120px;resize:vertical}
 
     .buttons{display:flex;gap:10px;align-items:center}
     .btn{padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer;border:none}
     .btn-primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#000}
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.12);color:#fff}
-    .whatsapp{background:#25D366;color:#fff;padding:10px 12px;border-radius:8px;text-decoration:none;font-weight:700}
+    .whatsapp{background:#25D366;color:#fff;padding:10px 12px;border-radius:8px;text-decoration:none;font-weight:700;display:inline-block}
 
     /* Sections shown/hidden */
     section.step{display:none}
     section.step.active{display:block}
 
-    /* Preview box */
+    /* Review box */
     .review{background:rgba(255,255,255,0.04);padding:12px;border-radius:10px}
 
     /* Spinner */
-    .spinner{width:48px;height:48px;border-radius:50%;border:5px solid rgba(255,255,255,0.12);border-top-color:var(--accent1);animation:spin 900ms linear infinite;margin:12px auto}
+    .spinner{width:36px;height:36px;border-radius:50%;border:5px solid rgba(255,255,255,0.12);border-top-color:var(--accent1);animation:spin 900ms linear infinite;margin:12px auto}
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* About & Contact */
-    .info{margin-top:22px;background:rgba(0,0,0,0.24);padding:16px;border-radius:12px}
+    /* Info blocks */
+    .info{margin-top:18px;background:rgba(0,0,0,0.24);padding:16px;border-radius:12px}
     .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     @media(max-width:900px){.row{flex-direction:column}.info-grid{grid-template-columns:1fr}}
 
     footer{margin-top:18px;text-align:center;color:rgba(255,255,255,0.9)}
 
-    /* Success / Error full-screen simple overlay panels for single-file version */
+    /* Result overlays */
     .result-panel{display:none;position:fixed;inset:0;z-index:40;align-items:center;justify-content:center}
     .result-panel.active{display:flex}
     .result-card{background:rgba(255,255,255,0.10);backdrop-filter:blur(12px);padding:30px;border-radius:16px;text-align:center;max-width:520px;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
     .result-card h2{margin:0 0 10px 0}
+
+    /* Responsive improvements for mobile readability */
+    @media (max-width:768px) {
+      .page-wrap{margin:18px auto;padding:12px}
+      .card{padding:16px}
+      h1{font-size:1rem}
+      .subtitle{font-size:0.95rem}
+      input,textarea,select{font-size:0.95rem}
+      .logo{width:48px;height:48px}
+      .buttons{flex-direction:column;align-items:stretch}
+      .whatsapp{display:block;text-align:center}
+    }
+
+    @media (max-width:480px) {
+      .overlay{background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.85))}
+      h1{font-size:0.98rem}
+    }
   </style>
 </head>
 <body>
-  <div class="slideshow" aria-hidden="true"></div>
+  <!-- Slideshow: place your 4 images in same folder with these names (or update src to match yours) -->
+  <div class="slideshow" aria-hidden="true">
+    <img src="electrician1.jpg" alt="">
+    <img src="electrician2.jpg" alt="">
+    <img src="electrician3.jpg" alt="">
+    <img src="electrician4.jpg" alt="">
+  </div>
   <div class="overlay" aria-hidden="true"></div>
 
   <main class="page-wrap">
@@ -94,7 +125,7 @@
       <!-- Step 1 -->
       <section id="step1" class="step active" aria-label="Step 1">
         <p class="subtitle" style="margin-bottom:10px">Step 1 — Tell us who you are & what you need</p>
-        <form id="formMain">
+        <form id="formMain" onsubmit="return false;">
           <div class="row">
             <div class="col">
               <label for="user_name">Full Name</label>
@@ -124,9 +155,9 @@
             </div>
           </div>
 
-          <div class="buttons">
+          <div class="buttons" style="margin-top:6px">
             <button type="button" class="btn btn-primary" id="next1">Next ➡</button>
-            <a class="whatsapp" id="quickwhats" target="_blank" href="https://api.whatsapp.com/send?phone=233543899210&text=Hello%20SmartFix%20Electricals%2C%20I%20need%20help.">💬 Quick WhatsApp</a>
+            <a class="whatsapp" id="quickwhats" target="_blank" href="https://api.whatsapp.com/send?phone=233543899210&text=Hello%20SmartFix%2C%20I%20need%20help.">💬 Quick WhatsApp</a>
             <div style="margin-left:auto" class="subtitle">Step 1 of 3</div>
           </div>
         </form>
@@ -166,9 +197,9 @@
             </div>
           </div>
 
-          <div class="buttons">
-            <button class="btn btn-ghost" id="back1">⬅ Back</button>
-            <button class="btn btn-primary" id="toReview">Review & Send ➡</button>
+          <div class="buttons" style="margin-top:6px">
+            <button type="button" class="btn btn-ghost" id="back1">⬅ Back</button>
+            <button type="button" class="btn btn-primary" id="toReview">Review & Send ➡</button>
             <div style="margin-left:auto" class="subtitle">Step 2 of 3</div>
           </div>
         </div>
@@ -177,16 +208,12 @@
       <!-- Review -->
       <section id="review" class="step" aria-label="Review">
         <p class="subtitle">Review your details — confirm before sending</p>
-        <div class="review" id="reviewBox">
-          <!-- items inserted here -->
-        </div>
+        <div class="review" id="reviewBox"></div>
 
         <div style="display:flex;gap:10px;align-items:center;margin-top:12px">
-          <button class="btn btn-ghost" id="editBtn">⬅ Edit</button>
-          <button class="btn btn-primary" id="confirmBtn">✅ Confirm & Send</button>
-          <div id="sending" style="display:none;margin-left:12px">
-            <div class="spinner" aria-hidden="true"></div>
-          </div>
+          <button type="button" class="btn btn-ghost" id="editBtn">⬅ Edit</button>
+          <button type="button" class="btn btn-primary" id="confirmBtn">✅ Confirm & Send</button>
+          <div id="sending" style="display:none;margin-left:12px"><div class="spinner" aria-hidden="true"></div></div>
         </div>
       </section>
     </div>
@@ -232,8 +259,8 @@
     <footer><small>© SmartFix electricals</small></footer>
   </main>
 
-  <!-- Result overlay (single-file version) -->
-  <div id="resultSuccess" class="result-panel">
+  <!-- Result overlays -->
+  <div id="resultSuccess" class="result-panel" role="dialog" aria-hidden="true">
     <div class="result-card">
       <h2 style="color:#00ff90">✅ Request Sent</h2>
       <p>Thanks for booking with SmartFix electricals. We will contact you soon.</p>
@@ -241,7 +268,7 @@
     </div>
   </div>
 
-  <div id="resultError" class="result-panel">
+  <div id="resultError" class="result-panel" role="dialog" aria-hidden="true">
     <div class="result-card">
       <h2 style="color:#ff6b6b">❌ Submission Failed</h2>
       <p>There was an error sending your request. Please check your internet and try again.</p>
@@ -249,39 +276,49 @@
     </div>
   </div>
 
-  <!-- EmailJS -->
+  <!-- Optional EmailJS (keeps previous placeholder init) -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
-    // keep placeholders - add your public key when ready
-    try { emailjs.init("ad1dHGUf_gonZ5ERG"); } catch(e) { console.warn('EmailJS init', e); }
+    // Init EmailJS if you will send emails (replace with your key when ready)
+    try { emailjs.init("ad1dHGUf_gonZ5ERG"); } catch(e) { /* EmailJS not critical for demo */ }
 
+    // Step elements
     const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
     const review = document.getElementById('review');
     const prog = document.getElementById('prog');
 
+    // NEXT button on Step 1
     document.getElementById('next1').addEventListener('click', ()=>{
       const name = document.getElementById('user_name').value.trim();
       const phone = document.getElementById('user_phone').value.trim();
       const type = document.getElementById('maintenance_type').value;
-      if(!name || !phone || !type){ alert('Please fill Full Name, Phone and Maintenance Type.'); return; }
+      if(!name || !phone || !type){
+        alert('Please fill Full Name, Phone and Maintenance Type.');
+        return;
+      }
+      // show step2
       step1.classList.remove('active'); step1.style.display='none';
       step2.classList.add('active'); step2.style.display='';
       prog.style.width='66%';
     });
 
+    // BACK button from Step 2
     document.getElementById('back1').addEventListener('click', ()=>{
       step2.classList.remove('active'); step2.style.display='none';
       step1.classList.add('active'); step1.style.display='';
       prog.style.width='33%';
     });
 
+    // TO REVIEW
     document.getElementById('toReview').addEventListener('click', ()=>{
       const email = document.getElementById('user_email').value.trim();
       const priority = document.getElementById('audience_level').value;
-      if(!email || !priority){ alert('Please fill Email and Priority before reviewing.'); return; }
+      if(!email || !priority){
+        alert('Please fill Email and Priority before reviewing.');
+        return;
+      }
 
-      // build review HTML
       const data = {
         user_name: document.getElementById('user_name').value.trim(),
         user_phone: document.getElementById('user_phone').value.trim(),
@@ -295,48 +332,47 @@
 
       const box = document.getElementById('reviewBox');
       box.innerHTML = `
-        <div class="review-item"><strong>Name:</strong> ${escape(data.user_name)}</div>
-        <div class="review-item"><strong>Phone:</strong> ${escape(data.user_phone)}</div>
-        <div class="review-item"><strong>Maintenance Type:</strong> ${escape(data.maintenance_type)}</div>
-        <div class="review-item"><strong>Email:</strong> ${escape(data.user_email)}</div>
-        <div class="review-item"><strong>Priority:</strong> ${escape(data.audience_level)}</div>
-        <div class="review-item"><strong>Preferred Date & Time:</strong> ${escape(data.preferred_datetime || 'Not specified')}</div>
-        <div class="review-item"><strong>Description:</strong> ${escape(data.message || 'No description provided')}</div>
+        <div style="margin-bottom:6px"><strong>Name:</strong> ${escapeHtml(data.user_name)}</div>
+        <div style="margin-bottom:6px"><strong>Phone:</strong> ${escapeHtml(data.user_phone)}</div>
+        <div style="margin-bottom:6px"><strong>Maintenance Type:</strong> ${escapeHtml(data.maintenance_type)}</div>
+        <div style="margin-bottom:6px"><strong>Email:</strong> ${escapeHtml(data.user_email)}</div>
+        <div style="margin-bottom:6px"><strong>Priority:</strong> ${escapeHtml(data.audience_level)}</div>
+        <div style="margin-bottom:6px"><strong>Preferred Date & Time:</strong> ${escapeHtml(data.preferred_datetime || 'Not specified')}</div>
+        <div style="margin-bottom:6px"><strong>Description:</strong> ${escapeHtml(data.message || 'No description provided')}</div>
       `;
+
       // show review
       step2.classList.remove('active'); step2.style.display='none';
       review.classList.add('active'); review.style.display='';
       prog.style.width='100%';
     });
 
+    // EDIT (back to step 2)
     document.getElementById('editBtn').addEventListener('click', ()=>{
-      // go back to step 2 for edits
       review.classList.remove('active'); review.style.display='none';
       step2.classList.add('active'); step2.style.display='';
       prog.style.width='66%';
     });
 
-    // Confirm & send (single-file: show result panels)
+    // CONFIRM & SEND
     document.getElementById('confirmBtn').addEventListener('click', ()=>{
       const raw = window.sessionStorage.getItem('smartfix_booking');
       if(!raw){ alert('No booking found.'); return; }
       const params = JSON.parse(raw);
 
-      // show spinner and disable button
       document.getElementById('confirmBtn').disabled = true;
       document.getElementById('sending').style.display='block';
 
       const serviceID = "service_972cf37";
       const templateID = "template_3epza38";
 
-      // fallback if EmailJS not loaded
+      // If EmailJS not available, simulate success (remove for production)
       if(typeof emailjs === 'undefined' || !emailjs.send){
-        // simulate success for demo (remove simulation for real send)
         setTimeout(()=> {
           document.getElementById('sending').style.display='none';
           document.getElementById('resultSuccess').classList.add('active');
           window.sessionStorage.removeItem('smartfix_booking');
-        }, 1000);
+        }, 900);
         return;
       }
 
@@ -357,7 +393,6 @@
     document.getElementById('rsHome').addEventListener('click', (e)=>{
       e.preventDefault();
       document.getElementById('resultSuccess').classList.remove('active');
-      // reset form and go to step1
       resetToStart();
     });
     document.getElementById('reTry').addEventListener('click', (e)=>{
@@ -367,26 +402,30 @@
     });
 
     function resetToStart(){
-      // reset UI to step1
       review.classList.remove('active'); review.style.display='none';
       step2.classList.remove('active'); step2.style.display='none';
       step1.classList.add('active'); step1.style.display='';
       prog.style.width='33%';
       document.getElementById('formMain').reset();
+      document.getElementById('confirmBtn').disabled = false;
     }
 
-    // small helpers
-    function escape(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;') }
+    // Small HTML escape helper
+    function escapeHtml(s){
+      if(!s) return '';
+      return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+    }
 
-    // dynamic quick whatsapp message update
+    // dynamic quick whatsapp message update (fixed — was causing earlier JS error)
     ['user_name','user_phone','maintenance_type'].forEach(id=>{
       const el=document.getElementById(id);
       if(!el) return;
       el.addEventListener('input', ()=>{
-        const name=document.getElementById('user_name').value.trim()||'[name]';
-        const phone=document.getElementById('user_phone').value.trim()||'[phone]';
-        const type=document.getElementById('maintenance_type').value||'electrical assistance';
-        document.getElementById('quickwhats').href = 'https://api.whatsapp.com/send?phone=233543899210&text=' + encodeURIComponent(Hello SmartFix, my name is ${name} (${phone}). I need ${type}.);
+        const name = document.getElementById('user_name').value.trim() || '[name]';
+        const phone = document.getElementById('user_phone').value.trim() || '[phone]';
+        const type = document.getElementById('maintenance_type').value || 'electrical assistance';
+        const text = `Hello SmartFix, my name is ${name} (${phone}). I need ${type}.`;
+        document.getElementById('quickwhats').href = 'https://api.whatsapp.com/send?phone=233543899210&text=' + encodeURIComponent(text);
       });
     });
   </script>
